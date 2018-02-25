@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>IdP initiated SSO</title>
+
+    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+    <link href="../static/css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}" rel="stylesheet" />
+    <link href="../static/css/layout.css" th:href="@{/css/layout.css}" rel="stylesheet" />
+    <script src="../static/js/bootstrap.min.js" th:href="@{/js/bootstrap.min.js}" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container">
+    <h1>IdP initiated SSO</h1>
+    <p class="lead">This project demonstrates how SAML2.0 works via a sample integration with Salesforce SSO. Watch how each field is populated into SAML response and figure out that they mean.</p>
+    <div class="panel panel-default">
+        <div class="panel-heading">SAML Configurations</div>
+        <div class="panel-body">
+            <form action="#" th:action="@{/processForm}" th:object="${config}" method="post">
+                <table>
+                    <tr>
+                        <td>SAML Version</td>
+                        <td>
+                            <select th:field="*{samlVersion}">
+                                <option value="2.0">v2.0</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Issuer</td>
+                        <td><input type="text" th:field="*{issuer}" /></td>
+                    </tr>
+                    <tr>
+                        <td>Subject</td>
+                        <td><input type="text" th:field="*{subject}" /></td>
+                    </tr>
+                    <tr>
+                        <td>ACS URL</td>
+                        <td><input type="text" th:field="*{acsUrl}" /></td>
+                    </tr>
+                    <tr>
+                        <td>Recipient</td>
+                        <td><input type="text" th:field="*{recipient}" /></td>
+                    </tr>
+                    <tr>
+                        <td>Audience</td>
+                        <td><input type="text" th:field="*{audience}" /></td>
+                    </tr>
+                    <tr>
+                        <td>SSO Start Page</td>
+                        <td><input type="text" th:field="*{ssoStartPage}" /></td>
+                    </tr>
+                    <tr>
+                        <td>RelayState</td>
+                        <td><input type="text" th:field="*{relayState}" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" value="Generate SAML Response" /></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">SAML Response</div>
+        <div class="panel-body">
+            <table>
+                <tr>
+                    <td>Saml Response</td>
+                    <td><textarea th:text="${outputs.samlResponse}" /></td>
+                </tr>
+                <tr>
+                    <td>Saml Response Signed</td>
+                    <td><textarea th:text="${outputs.samlResponseSigned}" /></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">SAML Response</div>
+        <div class="panel-body">
+            <form th:action="${config.acsUrl}" method="post">
+                <table>
+                    <tr>
+                        <td>Saml Response Signed and Base64Encoded</td>
+                        <td><input type="text" name="SAMLResponse" th:value="${outputs.samlResponseSingedAndBase64Encoded}" /></td>
+                    </tr>
+                    <tr>
+                        <td>RelayState</td>
+                        <td><input type="text" name="RelayState" th:value="${config.relayState}" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" value="Send SAML Response" /></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
